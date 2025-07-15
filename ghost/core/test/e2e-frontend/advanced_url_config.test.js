@@ -24,6 +24,8 @@ describe('Advanced URL Configurations', function () {
             mockManager.mockMail();
 
             await testUtils.startGhost();
+            // TODO: only insert the single draft post we want to test
+            await testUtils.fixtures.insertPostsAndTags();
 
             request = supertest.agent(configUtils.config.get('server:host') + ':' + configUtils.config.get('server:port'));
         });
@@ -82,6 +84,12 @@ describe('Advanced URL Configurations', function () {
         it('/welcome/amp/ should 404', async function () {
             await request.get('/welcome/amp/')
                 .expect(404);
+        });
+
+        it('should not cache preview routes', async function () {
+            await request.get('/blog/p/d52c42ae-2755-455c-80ec-70b2ec55c903/')
+                .expect(200)
+                .expect('Cache-Control', 'public, max-age=0');
         });
     });
 });
