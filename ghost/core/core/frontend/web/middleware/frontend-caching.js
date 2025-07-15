@@ -52,7 +52,7 @@ const getMiddleware = async (getFreeTier = async () => {
         }
 
         // CASE: Never cache preview routes
-        if (req.path.startsWith('/p/')) {
+        if (req.path?.startsWith('/p/')) {
             return shared.middleware.cacheControl('public', {maxAge: 0})(req, res, next);
         }
 
