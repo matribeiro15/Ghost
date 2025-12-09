@@ -36,9 +36,10 @@ export const createQuery = <ResponseData>(options: QueryOptions<ResponseData>) =
     const url = apiUrl(options.path, searchParams || options.defaultSearchParams, options?.useActivityPub);
     const fetchApi = useFetchApi();
     const handleError = useHandleError();
+    const hasPermission = usePermission(options.permissions);
 
     const result = useQuery<ResponseData>({
-        enabled: options.permissions ? usePermission(options.permissions) : true,
+        enabled: hasPermission,
         queryKey: [options.dataType, url],
         queryFn: () => fetchApi(url, {...options}),
         ...query
@@ -70,7 +71,7 @@ export const createPaginatedQuery = <ResponseData extends {meta?: Meta}>(options
     const url = apiUrl(options.path, paginatedSearchParams, options?.useActivityPub);
     const fetchApi = useFetchApi();
     const handleError = useHandleError();
-    const hasPermission = options.permissions ? usePermission(options.permissions) : true;
+    const hasPermission = usePermission(options.permissions);
 
     const result = useQuery<ResponseData>({
         enabled: hasPermission,
@@ -118,7 +119,7 @@ type InfiniteQueryHookOptions<ResponseData> = UseInfiniteQueryOptions<ResponseDa
 export const createInfiniteQuery = <ResponseData>(options: InfiniteQueryOptions<ResponseData>) => ({searchParams, getNextPageParams, ...query}: InfiniteQueryHookOptions<ResponseData> = {}) => {
     const fetchApi = useFetchApi();
     const handleError = useHandleError();
-    const hasPermission = options.permissions ? usePermission(options.permissions) : true;
+    const hasPermission = usePermission(options.permissions);
 
     const nextPageParams = getNextPageParams || options.defaultNextPageParams || (() => ({}));
 
