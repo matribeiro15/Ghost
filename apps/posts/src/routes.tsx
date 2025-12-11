@@ -1,4 +1,4 @@
-import Comments from '@/views/Comments/Comments';
+import Comments from '@src/views/comments/comments';
 import Growth from '@views/PostAnalytics/Growth/growth';
 import Newsletter from '@views/PostAnalytics/Newsletter/newsletter';
 import Overview from '@views/PostAnalytics/Overview/overview';
